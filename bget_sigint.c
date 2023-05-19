@@ -2,10 +2,10 @@
 
 /**
  * get_sigint - crtl + c call in prompt
- * @sig: Signal
+ * @signals: Signal
  */
-void get_sigint(int sig)
+void get_sigint(int signals)
 {
-	(void)sig;
+	(void)signals;
 	write(STDOUT_FILENO, "\n^-^ ", 5);
 }

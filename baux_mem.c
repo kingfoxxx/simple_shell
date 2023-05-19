@@ -4,17 +4,17 @@
  * _memcpy - info between void pointers to be copied.
  * @newptr: design for destination pointer.
  * @ptr: origin pointer.
- * @size:the new pointer size.
+ * @sign:the new pointer size.
  * Return: return null.
  */
-void _memcpy(void *newptr, const void *ptr, unsigned int size)
+void _memcpy(void *newptr, const void *ptr, unsigned int sign)
 
 {
 	char *char_ptr = (char *)ptr;
 	char *char_newptr = (char *)newptr;
 	unsigned int j;
 
-	for (j = 0; j < size; j++)
+	for (j = 0; j < sign; j++)
 		char_newptr[j] = char_ptr[j];
 }
 
@@ -25,8 +25,7 @@ void _memcpy(void *newptr, const void *ptr, unsigned int size)
  * @new_size: the new memory block in the new size & byte.
  *
  * Return: ptr to be returned.
- * if new_size == old_size,
-	returns ptr without changes.
+ * if new_size == old_size, returns ptr without changes.
  * if malloc failed, returns nothing.
  */
 
