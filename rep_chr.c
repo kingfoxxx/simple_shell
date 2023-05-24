@@ -94,7 +94,7 @@ int check_vars(r_var **h, char *in, char *st, data_shell *data)
  * @head: head of the linked list
  * @input: input string
  * @new_input: new input string (replaced)
- * @nlen: new length
+ * @xlen: new length
  * Return: replaced string
  */
 

@@ -2,13 +2,13 @@
 
 
 /**
- * is_closedir - checks ":" if is in the current directory
+ * is_cdir - checks ":" if is in the current directory
  * @path: type char pointer char.
  * @j: type int pointer of index for the file.
  * Return: 1 if the path is searchable in the cd, 0 otherwise.
  */
 
-int is_closedir(char *path, int *j)
+int is_cdir(char *path, int *j)
 
 {
 
@@ -50,7 +50,7 @@ char *_which(char *cmd, char **_environ)
 		i = 0;
 		while (token_path != NULL)
 		{
-			if (is_closedir(path, &i))
+			if (is_cdir(path, &i))
 				if (stat(cmd, &st) == 0)
 					return (cmd);
 			len_dir = _strlen(token_path);
@@ -74,14 +74,12 @@ char *_which(char *cmd, char **_environ)
 	}
 	if (cmd[0] == '/')
 		if (stat(cmd, &st) == 0)
-		{
 			return (cmd);
-		}
 	return (NULL);
 }
 
 /**
- * is_executable - determines if is an executable by other files
+ * is_executable - determines if is an executable
  *
  * @datash: data structure
  * Return: 0 if is not an executable, other number if it does
@@ -92,23 +90,23 @@ int is_executable(data_shell *datash)
 {
 	struct stat st;
 	int i;
-	char *inputs;
+	char *input;
 
-	inputs = datash->args[0];
-	for (i = 0; inputs[i]; i++)
+	input = datash->args[0];
+	for (i = 0; input[i]; i++)
 	{
-		if (inputs[i] == '.')
+		if (input[i] == '.')
 		{
-			if (inputs[i + 1] == '.')
+			if (input[i + 1] == '.')
 				return (0);
-			if (inputs[i + 1] == '/')
+			if (input[i + 1] == '/')
 				continue;
 			else
 				break;
 		}
-		else if (inputs[i] == '/' && i != 0)
+		else if (input[i] == '/' && i != 0)
 		{
-			if (inputs[i + 1] == '.')
+			if (input[i + 1] == '.')
 				continue;
 			i++;
 			break;
@@ -119,7 +117,7 @@ int is_executable(data_shell *datash)
 	if (i == 0)
 		return (0);
 
-	if (stat(inputs + i, &st) == 0)
+	if (stat(input + i, &st) == 0)
 	{
 		return (i);
 	}
@@ -167,18 +165,17 @@ int check_error_cmd(char *dir, data_shell *datash)
 }
 
 /**
- * cmd_exec - executes command lines for exec function
+ * cmd_exec - executes command lines
  *
  * @datash: data relevant (args and input)
  * Return: 1 on success.
  */
 
 int cmd_exec(data_shell *datash)
-
 {
-	pid_t pds;
+	pid_t pd;
 	pid_t wpd;
-	int sign;
+	int state;
 	int exec;
 	char *dir;
 	(void) wpd;
@@ -193,8 +190,8 @@ int cmd_exec(data_shell *datash)
 			return (1);
 	}
 
-	pds = fork();
-	if (pds == 0)
+	pd = fork();
+	if (pd == 0)
 	{
 		if (exec == 0)
 			dir = _which(datash->args[0], datash->_environ);
@@ -202,19 +199,17 @@ int cmd_exec(data_shell *datash)
 			dir = datash->args[0];
 		execve(dir + exec, datash->args, datash->_environ);
 	}
-	else if (pds < 0)
+	else if (pd < 0)
 	{
 		perror(datash->av[0]);
 		return (1);
 	}
-
 	else
 	{
 		do {
-			wpd = waitpid(pds, &sign, WUNTRACED);
-		} while (!WIFEXITED(sign) && !WIFSIGNALED(sign));
+			wpd = waitpid(pd, &state, WUNTRACED);
+		} while (!WIFEXITED(state) && !WIFSIGNALED(state));
 	}
-
-	datash->status = sign / 256;
+	datash->status = state / 256;
 	return (1);
 }

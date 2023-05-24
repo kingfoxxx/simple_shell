@@ -3,7 +3,7 @@
 
 /**
  * error_env - error messages for env in get_env are all over the place
- * @datashell: data relevant (counter, arguments, and functions).
+ * @datash: data relevant (counter, arguments, and functions).
  * Return: error message.
  */
 
@@ -41,7 +41,7 @@ char *error_env(data_shell *datash)
 }
 
 /**
- * error_path_208 - error messages for path and failure denied permission to the file.
+ * error_path_208 - error messages for path denied permission to the file
  * @datash: data relevant (counter, arguments and functions)
  *
  * Return: The error strings in the file.
